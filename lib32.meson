@@ -1,0 +1,19 @@
+[binaries]
+c = 'cc'
+cpp = 'c++'
+ar = 'ar'
+strip = 'strip'
+
+[properties]
+c_args = ['-m32']
+cpp_args = ['-m32']
+c_link_args = ['-m32']
+cpp_link_args = ['-m32']
+pkg_config_path = ['/usr/lib32/pkg-config']
+libdir = '/usr/lib32'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86'
+cpu = 'x86_64'
+endian = 'little'

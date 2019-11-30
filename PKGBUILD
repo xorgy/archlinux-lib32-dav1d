@@ -11,22 +11,20 @@ license=('BSD')
 depends=(
       "$_pkgbasename"
       'lib32-glibc'
-      'lib32-sdl2'
-      'lib32-libplacebo'
       'lib32-vulkan-icd-loader'
       )
 makedepends=(
       'meson'
-      'meson-cross-x86-linux-gnu'
       'ninja'
       'nasm'
       'doxygen'
       'vulkan-headers'
       )
-provides=('libdav1d.so')
-source=(https://downloads.videolan.org/pub/videolan/${_pkgbasename}/${pkgver}/${_pkgbasename}-${pkgver}.tar.xz{,.asc})
-sha512sums=('255e592256e47305921f8331f3ea7f9792e2c62b981f62a0ee05a342c3c1073ef4b469092252442c9d67294c0d69b03c127a49a73519aee0e37ab6d89e3000c3'
-            'SKIP')
+source=(https://downloads.videolan.org/pub/videolan/${_pkgbasename}/${pkgver}/${_pkgbasename}-${pkgver}.tar.xz{,.asc}
+        'lib32.meson')
+sha256sums=('f94cf88c4a3ac2fd3cb30d688e8ef5943854d73db2dd12985a78892e76560f0a'
+            'SKIP'
+            '0852227a4b8e2367d73727645203da45ead1834773458e2fc109d30e40e12221')
 validpgpkeys=('65F7C6B4206BD057A7EB73787180713BE58D1ADC') # VideoLAN Release Signing Key
 
 prepare() {
@@ -38,7 +36,7 @@ prepare() {
 build() {
   cd ${_pkgbasename}-${pkgver}
   arch-meson build \
-    --cross-file x86-linux-gnu \
+    --cross-file=../lib32.meson \
     --libdir=/usr/lib32
 
   ninja -C build
