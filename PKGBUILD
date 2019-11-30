@@ -2,8 +2,8 @@
 
 _pkgbasename=dav1d
 pkgname=lib32-$_pkgbasename
-pkgver=0.4.0
-pkgrel=2
+pkgver=0.5.1
+pkgrel=1
 pkgdesc='AV1 cross-platform decoder focused on speed and correctness (32 bit)'
 url='https://code.videolan.org/videolan/dav1d/'
 arch=('x86_64')
@@ -11,8 +11,6 @@ license=('BSD')
 depends=(
       "$_pkgbasename"
       'lib32-glibc'
-      'lib32-sdl2'
-      'lib32-libplacebo'
       'lib32-vulkan-icd-loader'
       )
 makedepends=(
@@ -22,10 +20,11 @@ makedepends=(
       'doxygen'
       'vulkan-headers'
       )
-provides=('libdav1d.so')
-source=(https://downloads.videolan.org/pub/videolan/${_pkgbasename}/${pkgver}/${_pkgbasename}-${pkgver}.tar.xz{,.asc})
-sha512sums=('8ed44b3d747f01b87b34f86fada824dfb7f86c16168af641fe754c767af5714e9fe212b6eea2bc11b5b041460184c78f755e10d4947e46bc70d95e1bd750f79d'
-            'SKIP')
+source=(https://downloads.videolan.org/pub/videolan/${_pkgbasename}/${pkgver}/${_pkgbasename}-${pkgver}.tar.xz{,.asc}
+        'lib32.meson')
+sha256sums=('ad69f9eb4cc8c722048307b1ea13f72d9c1be2a7f45c7c12ceb7101793338e0d'
+            'SKIP'
+            '0852227a4b8e2367d73727645203da45ead1834773458e2fc109d30e40e12221')
 validpgpkeys=('65F7C6B4206BD057A7EB73787180713BE58D1ADC') # VideoLAN Release Signing Key
 
 prepare() {
@@ -35,12 +34,9 @@ prepare() {
 }
 
 build() {
-  export CC="gcc -m32"
-  export CXX="g++ -m32"
-  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-
   cd ${_pkgbasename}-${pkgver}
   arch-meson build \
+    --cross-file=../lib32.meson \
     --libdir=/usr/lib32
 
   ninja -C build
